@@ -10,42 +10,47 @@ import java.util.List;
 
 public class GameService {
 
-    public static final int BOARD_SIZE = 12;
+    public static final int BOARD_SIZE = 10;
 //todo map классов, с ходами
 //todo класс стэп, начальная позиция, куда ходил, кого убил(не убил)
 
-    public void initBoard() {
+    public List<List<Cell>> initBoard() {
+        List<List<Cell>> rows = new ArrayList<>();
+
         List<ColorEnum> cellColors = Arrays.asList(ColorEnum.BLACK, ColorEnum.WHITE);
 
         Cell prevCell;
         Cell currCell;
 
-        List<Cell> prevRow = new ArrayList<>();
+        List<Cell> prevRow = null;
         for (int i = 0; i < BOARD_SIZE; i++) {
             prevCell = null;
             List<Cell> currRow = new ArrayList<>();
             for (int j = 0; j < BOARD_SIZE; j++) {
-                currCell = new Cell(cellColors.get(i % 2));
-                if (!isCellNull(prevCell)) {
+                currCell = new Cell(cellColors.get(j % 2));
+                if (prevCell != null) {
                     currCell.getNeighbors().put(DirectionEnum.WEST, prevCell);
                     prevCell.getNeighbors().put(DirectionEnum.EAST, currCell);
                 }
                 currRow.add(currCell);
                 prevCell = currCell;
-                if (!isCellNull(prevCell)) {
-                    for (int k = 0; k < BOARD_SIZE; k++) {
+                if (prevRow != null) {
+                    for (int k = 0; k < currRow.size(); k++) {
                         Cell currRowCell = currRow.get(k);
                         Cell prevRowCell = prevRow.get(k);
-                        currRowCell.getNeighbors().put(DirectionEnum.SOUTH, prevRowCell);
-//prevRowCell.getNeighbours().put(DirectionEnum.NORTH, currRowCell);
+                        currRowCell.getNeighbors().put(DirectionEnum.NORTH, prevRowCell);
+                        prevRowCell.getNeighbors().put(DirectionEnum.SOUTH, currRowCell);
                     }
                 }
-                prevRow = currRow;
             }
+            rows.add(currRow);
+            prevRow = currRow;
         }
+        return rows;
     }
 
-    private static boolean isCellNull(Cell cell) {
-        return cell == null;
+    private void initWizardsCells(List<List<Cell>> board) {
+        board.get(1).get(0).getNeighbors().put(DirectionEnum.NORTH_WEST, new Cell(board.get(1).get(0).getColor()));
+        //
     }
 }
