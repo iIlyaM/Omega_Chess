@@ -6,7 +6,7 @@ public class Game {
 
     private Map<Piece, Cell> piece2CellMap = new LinkedHashMap<>();
     private Map<Cell, Piece> cell2PieceMap = new HashMap();
-    private Map<Player, Set<Piece>> Player2PieceMap = new HashMap();
+    private Map<Player, Set<Piece>> player2PieceMap = new HashMap();
     private Map<Piece, Player> piece2PlayerMap = new LinkedHashMap<>();
     private List<Step> steps = new ArrayList<>();
 
@@ -27,11 +27,11 @@ public class Game {
     }
 
     public Map<Player, Set<Piece>> getPlayer2PieceMap() {
-        return Player2PieceMap;
+        return player2PieceMap;
     }
 
     public void setPlayer2PieceMap(Map<Player, Set<Piece>> player2PieceMap) {
-        Player2PieceMap = player2PieceMap;
+        this.player2PieceMap = player2PieceMap;
     }
 
     public Map<Piece, Player> getPiece2PlayerMap() {
