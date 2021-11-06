@@ -46,38 +46,37 @@ public class GameService {
          return rows;
     }
 
-    private void initWhitePawns(List<List<Cell>> board, Game game, Player firstPlayer) {
+    public void initWhitePawns(List<List<Cell>> board, Game game, Player firstPlayer) {
         Map<Piece, Cell> whitePawn2CellMap = game.getPiece2CellMap();
         Map<Cell, Piece> cell2WhitePawnMap = game.getCell2PieceMap();
         Map<Player, Set<Piece>> firstPlayer2PieceMap = game.getPlayer2PieceMap();
         Set<Piece> playerPieces = new LinkedHashSet<>();
         Map<Piece, Player> piece2FirstPlayerMap = new LinkedHashMap<>();
-        Piece insertablePawn = new Piece(PieceEnum.PAWN, ColorEnum.WHITE);
+
         //board.get(1).get(i)
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            whitePawn2CellMap.put(insertablePawn, board.get(1).get(i));
-            cell2WhitePawnMap.put(board.get(1).get(i), insertablePawn);
-            playerPieces.add(insertablePawn);
+            whitePawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), board.get(1).get(i));
+            cell2WhitePawnMap.put(board.get(1).get(i), new Piece(PieceEnum.PAWN, ColorEnum.WHITE));
+            playerPieces.add(new Piece(PieceEnum.PAWN, ColorEnum.WHITE));
             firstPlayer2PieceMap.put(firstPlayer, playerPieces);
-            piece2FirstPlayerMap.put(insertablePawn, firstPlayer);
+            piece2FirstPlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), firstPlayer);
         }
     }
 
-    private void initBlackPawns(List<List<Cell>> board, Game game, Player secondPlayer) {
+    public void initBlackPawns(List<List<Cell>> board, Game game, Player secondPlayer) {
         Map<Piece, Cell> blackPawn2CellMap = game.getPiece2CellMap();
         Map<Cell, Piece> cell2BlackPawnMap = game.getCell2PieceMap();
         Map<Player, Set<Piece>> secondPlayer2PieceMap = game.getPlayer2PieceMap();
         Set<Piece> playerPieces = new LinkedHashSet<>();
         Map<Piece, Player> piece2SecondPlayerMap = new LinkedHashMap<>();
-        Piece insertablePawn = new Piece(PieceEnum.PAWN, ColorEnum.BLACK);
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            blackPawn2CellMap.put(insertablePawn, board.get(8).get(i));
-            cell2BlackPawnMap.put(board.get(8).get(i), insertablePawn);
-            playerPieces.add(insertablePawn);
+            blackPawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK), board.get(8).get(i));
+            cell2BlackPawnMap.put(board.get(8).get(i), new Piece(PieceEnum.PAWN, ColorEnum.BLACK));
+            playerPieces.add(new Piece(PieceEnum.PAWN, ColorEnum.BLACK));
             secondPlayer2PieceMap.put(secondPlayer, playerPieces);
-            piece2SecondPlayerMap.put(insertablePawn, secondPlayer);
+            piece2SecondPlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK),  secondPlayer);
         }
     }
 
