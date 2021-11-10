@@ -47,38 +47,58 @@ public class GameService {
     }
 
     public void initWhitePawns(List<List<Cell>> board, Game game, Player firstPlayer) {
-        Map<Piece, Cell> whitePawn2CellMap = game.getPiece2CellMap();
-        Map<Cell, Piece> cell2WhitePawnMap = game.getCell2PieceMap();
-        Map<Player, Set<Piece>> firstPlayer2PieceMap = game.getPlayer2PieceMap();
+        Map<Piece, Cell> pawn2CellMap = game.getPiece2CellMap();
+        Map<Cell, Piece> cell2PieceMap = game.getCell2PieceMap();
+        Map<Player, Set<Piece>> player2PieceMap = game.getPlayer2PieceMap();
         Set<Piece> playerPieces = new LinkedHashSet<>();
-        Map<Piece, Player> piece2FirstPlayerMap = new LinkedHashMap<>();
+        Map<Piece, Player> piece2PlayerMap = new LinkedHashMap<>();
 
         //board.get(1).get(i)
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            whitePawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), board.get(1).get(i));
-            cell2WhitePawnMap.put(board.get(1).get(i), new Piece(PieceEnum.PAWN, ColorEnum.WHITE));
+            pawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), board.get(1).get(i));
+            cell2PieceMap.put(board.get(1).get(i), new Piece(PieceEnum.PAWN, ColorEnum.WHITE));
             playerPieces.add(new Piece(PieceEnum.PAWN, ColorEnum.WHITE));
-            firstPlayer2PieceMap.put(firstPlayer, playerPieces);
-            piece2FirstPlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), firstPlayer);
+            player2PieceMap.put(firstPlayer, playerPieces);
+            piece2PlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.WHITE), firstPlayer);
+        }
+    }
+
+    public void initWhitePieces(List<List<Cell>> board, Game game, Player firstPlayer) {
+        List<PieceEnum> pieces =
+                Arrays.asList(PieceEnum.CHAMPION, PieceEnum.ROOK, PieceEnum.KNIGHT, PieceEnum.BISHOP);
+
+        Map<Piece, Cell> pawn2CellMap = game.getPiece2CellMap();
+        Map<Cell, Piece> cell2PieceMap = game.getCell2PieceMap();
+        Map<Player, Set<Piece>> player2PieceMap = game.getPlayer2PieceMap();
+        Set<Piece> playerPieces = new LinkedHashSet<>();
+        Map<Piece, Player> piece2PlayerMap = new LinkedHashMap<>();
+
+        for (int i = 0; i <= pieces.size(); i++) {
+            pawn2CellMap.put(new Piece(pieces.get(i), ColorEnum.WHITE), board.get(0).get(i));
+            cell2PieceMap.put(board.get(1).get(i), new Piece(pieces.get(i), ColorEnum.WHITE));
+            playerPieces.add(new Piece(pieces.get(i), ColorEnum.WHITE));
+            player2PieceMap.put(firstPlayer, playerPieces);
+            piece2PlayerMap.put(new Piece(pieces.get(i), ColorEnum.WHITE), firstPlayer);
         }
     }
 
     public void initBlackPawns(List<List<Cell>> board, Game game, Player secondPlayer) {
-        Map<Piece, Cell> blackPawn2CellMap = game.getPiece2CellMap();
-        Map<Cell, Piece> cell2BlackPawnMap = game.getCell2PieceMap();
-        Map<Player, Set<Piece>> secondPlayer2PieceMap = game.getPlayer2PieceMap();
+        Map<Piece, Cell> pawn2CellMap = game.getPiece2CellMap();
+        Map<Cell, Piece> cell2PieceMap = game.getCell2PieceMap();
+        Map<Player, Set<Piece>> player2PieceMap = game.getPlayer2PieceMap();
         Set<Piece> playerPieces = new LinkedHashSet<>();
-        Map<Piece, Player> piece2SecondPlayerMap = new LinkedHashMap<>();
+        Map<Piece, Player> piece2PlayerMap = new LinkedHashMap<>();
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            blackPawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK), board.get(8).get(i));
-            cell2BlackPawnMap.put(board.get(8).get(i), new Piece(PieceEnum.PAWN, ColorEnum.BLACK));
+            pawn2CellMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK), board.get(8).get(i));
+            cell2PieceMap.put(board.get(8).get(i), new Piece(PieceEnum.PAWN, ColorEnum.BLACK));
             playerPieces.add(new Piece(PieceEnum.PAWN, ColorEnum.BLACK));
-            secondPlayer2PieceMap.put(secondPlayer, playerPieces);
-            piece2SecondPlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK),  secondPlayer);
+            player2PieceMap.put(secondPlayer, playerPieces);
+            piece2PlayerMap.put(new Piece(PieceEnum.PAWN, ColorEnum.BLACK), secondPlayer);
         }
     }
+
 
     private void initWizardsCells(List<List<Cell>> board) {
         Cell northWestCell = board.get(0).get(0);
