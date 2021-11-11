@@ -15,7 +15,9 @@ public class Main {
         Player player2 = new Player("Геннадий");
         GameService gs = new GameService();
         List<List<Cell>> board = gs.initBoard();
-        gs.initWhitePawns(board, game, player1);
-        gs.initBlackPawns(board, game, player2);
+        gs.initPieces(board, game, player1, player2);
+
+//        gs.initWhitePawns(board, game, player1);
+//        gs.initBlackPawns(board, game, player2);
     }
 }
