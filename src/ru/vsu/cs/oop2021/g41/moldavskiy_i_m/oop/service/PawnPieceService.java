@@ -10,9 +10,11 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
 import java.util.*;
 
 public class PawnPieceService implements IPieceService {
+
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
-        Set<Cell> possibleMoves = new LinkedHashSet<>();
+        List<Cell> possibleMoves = new ArrayList<>();
+        //Set<Cell> possibleMoves = new LinkedHashSet<>();
         Set<Cell> beatMoves = new LinkedHashSet<>();
         ColorEnum pieceColor = piece.getPieceColor();
         Map<Piece, Cell> pieceCellMap = game.getPiece2CellMap();
@@ -23,7 +25,7 @@ public class PawnPieceService implements IPieceService {
         } else {
             possibleMoves.add(findPawnStep(game, piece, direction));
         }
-        return null;
+        return possibleMoves;
     }
 
     @Override
@@ -69,10 +71,12 @@ public class PawnPieceService implements IPieceService {
     }
 
     private boolean isFirstPawnMove(Game game, Piece piece, DirectionEnum direction) {
+        Piece piece1 = piece;
         Cell currCell = game.getPiece2CellMap().get(piece);
 
         Cell prevCell = currCell.getNeighbors().get(direction);
         return prevCell.getNeighbors().get(direction) == null;
+        //todo поправить направления
     }
 
     private DirectionEnum getDirection(Piece piece) {

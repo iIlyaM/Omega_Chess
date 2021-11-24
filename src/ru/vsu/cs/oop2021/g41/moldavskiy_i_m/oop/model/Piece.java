@@ -3,6 +3,8 @@ package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.PieceEnum;
 
+import java.util.Objects;
+
 public class Piece {
 
     private PieceEnum pieceType;
@@ -21,4 +23,5 @@ public class Piece {
     public ColorEnum getPieceColor() {
         return pieceColor;
     }
+
 }
