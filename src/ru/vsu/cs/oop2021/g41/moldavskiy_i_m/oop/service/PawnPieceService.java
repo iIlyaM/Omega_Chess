@@ -36,10 +36,23 @@ public class PawnPieceService implements IPieceService {
         Map<Piece, Cell> pieceCellMap = game.getPiece2CellMap();
         Cell currCell = pieceCellMap.get(piece);
         Cell nextCell;
+        Cell nextLeftCell;
+        Cell nextRightCell;
 
         for (int i = 0; i < 3; i++) {
             nextCell = currCell.getNeighbors().get(direction);
+            nextLeftCell = nextCell.getNeighbors().get(DirectionEnum.WEST);
+            nextRightCell = nextCell.getNeighbors().get(DirectionEnum.EAST);
             firstSteps.add(nextCell);
+
+            nextCell = currCell.getNeighbors().get(direction);
+            if(isAttackAvailable(game, piece, nextLeftCell)) {
+                firstSteps.add(nextLeftCell);
+            }
+
+            if(isAttackAvailable(game, piece, nextRightCell)) {
+                firstSteps.add(nextRightCell);
+            }
             currCell = nextCell;
         }
         return firstSteps;
@@ -61,7 +74,6 @@ public class PawnPieceService implements IPieceService {
     }
 
     private boolean isAttackAvailable(Game game, Piece piece, Cell testedCell) {
-
         if (testedCell != null) {
             return (game.getCell2PieceMap().get(testedCell) != null) &&
                     (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
