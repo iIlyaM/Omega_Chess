@@ -58,6 +58,17 @@ public class PawnPieceService implements IPieceService {
         return firstSteps;
     }
 
+    private Set<Cell> findPawnSteps(Game game, Piece piece, DirectionEnum direction) {
+        Set<Cell> possibleMoves = new LinkedHashSet<>();
+        Cell currentCell = game.getPiece2CellMap().get(piece);
+        Cell nextCell = currentCell.getNeighbors().get(direction);
+
+        if(isMoveAvailable(game, nextCell)) {
+            possibleMoves.add(nextCell);
+        }
+        return possibleMoves;
+    }
+
     private boolean isFirstPawnMove(Game game, Piece piece, DirectionEnum direction) {
         Cell currCell = game.getPiece2CellMap().get(piece);
 
@@ -77,6 +88,13 @@ public class PawnPieceService implements IPieceService {
         if (testedCell != null) {
             return (game.getCell2PieceMap().get(testedCell) != null) &&
                     (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
+        }
+        return false;
+    }
+
+    private boolean isMoveAvailable(Game game, Cell testedCell) {
+        if(testedCell != null) {
+            return game.getCell2PieceMap().get(testedCell) == null;
         }
         return false;
     }
