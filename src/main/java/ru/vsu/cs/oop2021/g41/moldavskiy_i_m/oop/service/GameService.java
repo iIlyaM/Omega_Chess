@@ -131,6 +131,7 @@ public class GameService {
         }
         Cell queenCell = board.get(0).get(((BOARD_SIZE - 2) / 2) - 1);
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
+        playerPieces.add(queenPiece);
         game.getCell2PieceMap().put(queenCell, queenPiece);
         game.getPiece2CellMap().put(queenPiece, queenCell);
         game.getPlayer2PieceMap().put(player, playerPieces);
@@ -174,6 +175,7 @@ public class GameService {
         }
         Cell queenCell = board.get(BOARD_SIZE - 1).get(((BOARD_SIZE - 2) / 2) - 1);
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.BLACK);
+        playerPieces.add(queenPiece);
         game.getCell2PieceMap().put(queenCell, queenPiece);
         game.getPiece2CellMap().put(queenPiece, queenCell);
         game.getPlayer2PieceMap().put(player, playerPieces);

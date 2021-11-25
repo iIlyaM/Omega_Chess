@@ -16,11 +16,9 @@ public class PawnPieceService implements IPieceService {
         List<Cell> possibleMoves = new ArrayList<>();
         //Set<Cell> possibleMoves = new LinkedHashSet<>();
         Set<Cell> beatMoves = new LinkedHashSet<>();
-        ColorEnum pieceColor = piece.getPieceColor();
-        Map<Piece, Cell> pieceCellMap = game.getPiece2CellMap();
         DirectionEnum direction = getDirection(piece);
 
-        if(isFirstPawnMove(game, piece, direction)) {
+        if(isFirstPawnMove(game, piece)) {
             possibleMoves.addAll(firstPawnStep(game, piece, direction));
         } else {
             possibleMoves.add(findPawnStep(game, piece, direction));
@@ -70,12 +68,18 @@ public class PawnPieceService implements IPieceService {
         return null;
     }
 
-    private boolean isFirstPawnMove(Game game, Piece piece, DirectionEnum direction) {
-        Piece piece1 = piece;
+    private boolean isFirstPawnMove(Game game, Piece piece) {
+        DirectionEnum dir;
         Cell currCell = game.getPiece2CellMap().get(piece);
 
-        Cell prevCell = currCell.getNeighbors().get(direction);
-        return prevCell.getNeighbors().get(direction) == null;
+        if(piece.getPieceColor() == ColorEnum.WHITE) {
+            dir = DirectionEnum.SOUTH;
+        } else {
+            dir = DirectionEnum.NORTH;
+        }
+
+        Cell prevCell = currCell.getNeighbors().get(dir);
+        return prevCell.getNeighbors().get(dir) == null;
         //todo поправить направления
     }
 

@@ -26,6 +26,14 @@ public class Main {
         Cell testCell = game.getPiece2CellMap().get(pieces1.get(0));
         pawnPieceService.getPossibleMoves(game, pieces1.get(0));
 
+//        for (int i = 0; i < board.size(); i++) {
+//            for (int j = 0; j < board.size(); j++) {
+//                if(game.getCell2PieceMap().get(board.get(i).get(j)).getPieceType() != null) {
+//                    System.out.println(i + " " + j + " " + "фигура - " + game.getCell2PieceMap().get(board.get(i).get(j)).getPieceType().name());
+//                } else System.out.println(i + " " + j);
+//            }
+//        }
+
 //        gs.initWhitePawns(board, game, player1);
 //        gs.initBlackPawns(board, game, player2);
     }
