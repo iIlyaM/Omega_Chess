@@ -6,6 +6,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.utils.PieceServiceUtil;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class PawnPieceService implements IPieceService {
         List<Cell> possibleMoves = new ArrayList<>();
         //Set<Cell> possibleMoves = new LinkedHashSet<>();
         Set<Cell> beatMoves = new LinkedHashSet<>();
-        DirectionEnum direction = getDirection(piece);
+        DirectionEnum direction = PieceServiceUtil.getDirection(piece);
 
         if(isFirstPawnMove(game, piece)) {
             possibleMoves.addAll(firstPawnStep(game, piece, direction));
@@ -81,14 +82,6 @@ public class PawnPieceService implements IPieceService {
         Cell prevCell = currCell.getNeighbors().get(dir);
         return prevCell.getNeighbors().get(dir) == null;
         //todo поправить направления
-    }
-
-    private DirectionEnum getDirection(Piece piece) {
-        if(piece.getPieceColor() == ColorEnum.BLACK) {
-            return DirectionEnum.SOUTH;
-        } else {
-            return DirectionEnum.NORTH;
-        }
     }
 
     private boolean isAttackAvailable(Game game, Piece piece, Cell testedCell) {

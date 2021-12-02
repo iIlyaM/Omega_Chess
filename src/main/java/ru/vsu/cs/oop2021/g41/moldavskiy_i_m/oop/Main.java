@@ -8,6 +8,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.GameService;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.PawnPieceService;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class Main {
         List<Piece> pieces1 = new ArrayList<>(pieces);
         Cell testCell = game.getPiece2CellMap().get(pieces1.get(0));
         List<Cell> testList = pawnPieceService.getPossibleMoves(game, pieces1.get(0));
+
 
 //        for (int i = 0; i < board.size(); i++) {
 //            for (int j = 0; j < board.size(); j++) {
