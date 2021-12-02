@@ -21,10 +21,10 @@ public class Main {
         List<List<Cell>> board = gs.initBoard();
         gs.initPieces(board, game, player1, player2);
         PawnPieceService pawnPieceService = new PawnPieceService();
-        Set<Piece> pieces = game.getPlayer2PieceMap().get(player1);
+        Set<Piece> pieces = game.getPlayer2PieceMap().get(player2);
         List<Piece> pieces1 = new ArrayList<>(pieces);
         Cell testCell = game.getPiece2CellMap().get(pieces1.get(0));
-        pawnPieceService.getPossibleMoves(game, pieces1.get(0));
+        List<Cell> testList = pawnPieceService.getPossibleMoves(game, pieces1.get(0));
 
 //        for (int i = 0; i < board.size(); i++) {
 //            for (int j = 0; j < board.size(); j++) {

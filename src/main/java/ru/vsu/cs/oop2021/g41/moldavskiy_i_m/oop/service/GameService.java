@@ -67,8 +67,8 @@ public class GameService {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             Piece pawnPiece = new Piece(PieceEnum.PAWN, ColorEnum.WHITE);
-            game.getPiece2CellMap().put(pawnPiece, board.get(1).get(i));
-            game.getCell2PieceMap().put(board.get(1).get(i), pawnPiece);
+            game.getPiece2CellMap().put(pawnPiece, board.get(8).get(i));
+            game.getCell2PieceMap().put(board.get(8).get(i), pawnPiece);
             playerPieces.add(pawnPiece);
             game.getPlayer2PieceMap().put(firstPlayer, playerPieces);
             game.getPiece2PlayerMap().put(pawnPiece, firstPlayer);
@@ -95,8 +95,8 @@ public class GameService {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             Piece pawnPiece = new Piece(PieceEnum.PAWN, ColorEnum.BLACK);
-            game.getPiece2CellMap().put(pawnPiece, board.get(8).get(i));
-            game.getCell2PieceMap().put(board.get(8).get(i), pawnPiece);
+            game.getPiece2CellMap().put(pawnPiece, board.get(1).get(i));
+            game.getCell2PieceMap().put(board.get(1).get(i), pawnPiece);
             playerPieces.add(pawnPiece);
             game.getPlayer2PieceMap().put(secondPlayer, playerPieces);
             game.getPiece2PlayerMap().put(pawnPiece, secondPlayer);
@@ -123,13 +123,13 @@ public class GameService {
     ) {
         for (int i = 0; i < (BOARD_SIZE - 2) / 2; i++) {
             Piece whitePiece = new Piece(pieces.get(i), ColorEnum.WHITE);
-            game.getPiece2CellMap().put(whitePiece, board.get(0).get(i));
-            game.getCell2PieceMap().put(board.get(0).get(i), whitePiece);
+            game.getPiece2CellMap().put(whitePiece, board.get(9).get(i));
+            game.getCell2PieceMap().put(board.get(9).get(i), whitePiece);
             playerPieces.add(whitePiece);
             game.getPlayer2PieceMap().put(player, playerPieces);
             game.getPiece2PlayerMap().put(whitePiece, player);
         }
-        Cell queenCell = board.get(0).get(((BOARD_SIZE - 2) / 2) - 1);
+        Cell queenCell = board.get(9).get(((BOARD_SIZE - 2) / 2) - 1);
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
         playerPieces.add(queenPiece);
         game.getCell2PieceMap().put(queenCell, queenPiece);
@@ -146,12 +146,12 @@ public class GameService {
     ) {
         for (int i = BOARD_SIZE - 1, k = 0; i > (BOARD_SIZE - 2) / 2 && k < pieces.size(); i--, k++) {
             Piece whitePiece = new Piece(pieces.get(k), ColorEnum.WHITE);
-            game.getPiece2CellMap().put(whitePiece, board.get(1).get(i));
-            game.getCell2PieceMap().put(board.get(1).get(i), whitePiece);
+            game.getPiece2CellMap().put(whitePiece, board.get(BOARD_SIZE - 1).get(i));
+            game.getCell2PieceMap().put(board.get(BOARD_SIZE - 1).get(i), whitePiece);
             playerPieces.add(whitePiece);
             game.getPiece2PlayerMap().put(whitePiece, player);
         }
-        Cell kingCell = board.get(0).get(((BOARD_SIZE - 2) / 2) + 2);
+        Cell kingCell = board.get(BOARD_SIZE - 1).get(((BOARD_SIZE - 2) / 2) + 2);
         Piece piece = new Piece(PieceEnum.KING, ColorEnum.WHITE);
         game.getCell2PieceMap().put(kingCell, piece);
         game.getPiece2CellMap().put(piece, kingCell);
@@ -168,12 +168,12 @@ public class GameService {
     ) {
         for (int i = 0; i < (BOARD_SIZE - 2) / 2; i++) {
             Piece blackPiece = new Piece(pieces.get(i), ColorEnum.BLACK);
-            game.getPiece2CellMap().put(blackPiece, board.get(BOARD_SIZE - 1).get(i));
-            game.getCell2PieceMap().put(board.get(BOARD_SIZE - 1).get(i), blackPiece);
+            game.getPiece2CellMap().put(blackPiece, board.get(0).get(i));
+            game.getCell2PieceMap().put(board.get(0).get(i), blackPiece);
             playerPieces.add(blackPiece);
             game.getPiece2PlayerMap().put(blackPiece, player);
         }
-        Cell queenCell = board.get(BOARD_SIZE - 1).get(((BOARD_SIZE - 2) / 2) - 1);
+        Cell queenCell = board.get(0).get(((BOARD_SIZE - 2) / 2) - 1);
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.BLACK);
         playerPieces.add(queenPiece);
         game.getCell2PieceMap().put(queenCell, queenPiece);
@@ -190,14 +190,14 @@ public class GameService {
     ) {
         for (int i = BOARD_SIZE - 1, k = 0; i > (BOARD_SIZE - 2) / 2 && k < pieces.size(); i--, k++) {
             Piece blackPiece = new Piece(pieces.get(k), ColorEnum.BLACK);
-            game.getPiece2CellMap().put(blackPiece, board.get(BOARD_SIZE - 1).get(i));
-            game.getCell2PieceMap().put(board.get(BOARD_SIZE - 1).get(i), blackPiece);
+            game.getPiece2CellMap().put(blackPiece, board.get(0).get(i));
+            game.getCell2PieceMap().put(board.get(0).get(i), blackPiece);
             playerPieces.add(blackPiece);
             game.getPlayer2PieceMap().put(player, playerPieces);
             game.getPiece2PlayerMap().put(blackPiece, player);
         }
 
-        Cell kingCell = board.get(BOARD_SIZE - 1).get(((BOARD_SIZE - 2) / 2) + 2);
+        Cell kingCell = board.get(0).get(((BOARD_SIZE - 2) / 2) + 2);
         Piece kingPiece = new Piece(PieceEnum.KING, ColorEnum.BLACK);
         game.getCell2PieceMap().put(kingCell, kingPiece);
         game.getPiece2CellMap().put(kingPiece, kingCell);
