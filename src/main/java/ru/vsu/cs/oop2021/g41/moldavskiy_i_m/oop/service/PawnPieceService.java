@@ -47,11 +47,11 @@ public class PawnPieceService implements IPieceService {
             firstSteps.add(nextCell);
 
             nextCell = currCell.getNeighbors().get(direction);
-            if(isAttackAvailable(game, piece, nextLeftCell)) {
+            if(PieceServiceUtil.isMoveAvailable(game, piece, nextLeftCell)) {
                 firstSteps.add(nextLeftCell);
             }
 
-            if(isAttackAvailable(game, piece, nextRightCell)) {
+            if(PieceServiceUtil.isMoveAvailable(game, piece, nextRightCell)) {
                 firstSteps.add(nextRightCell);
             }
             currCell = nextCell;
@@ -63,7 +63,7 @@ public class PawnPieceService implements IPieceService {
         Cell currentCell = game.getPiece2CellMap().get(piece);
         Cell nextCell = currentCell.getNeighbors().get(direction);
 
-        if(isMoveAvailable(game, nextCell)) {
+        if(PieceServiceUtil.isMoveAvailable(game,piece, nextCell)) {
             return nextCell;
         }
         return null;
@@ -81,21 +81,7 @@ public class PawnPieceService implements IPieceService {
 
         Cell prevCell = currCell.getNeighbors().get(dir);
         return prevCell.getNeighbors().get(dir) == null;
-        //todo поправить направления
     }
 
-    private boolean isAttackAvailable(Game game, Piece piece, Cell testedCell) {
-        if (testedCell != null) {
-            return (game.getCell2PieceMap().get(testedCell) != null) &&
-                    (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
-        }
-        return false;
-    }
 
-    private boolean isMoveAvailable(Game game, Cell testedCell) {
-        if(testedCell != null) {
-            return game.getCell2PieceMap().get(testedCell) == null;
-        }
-        return false;
-    }
 }

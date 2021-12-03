@@ -5,8 +5,10 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Player;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.GameService;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.KnightPieceService;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.PawnPieceService;
 
+import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,10 +24,10 @@ public class Main {
         List<List<Cell>> board = gs.initBoard();
         gs.initPieces(board, game, player1, player2);
         PawnPieceService pawnPieceService = new PawnPieceService();
+        KnightPieceService knightPieceService = new KnightPieceService();
         Set<Piece> pieces = game.getPlayer2PieceMap().get(player2);
         List<Piece> pieces1 = new ArrayList<>(pieces);
-        Cell testCell = game.getPiece2CellMap().get(pieces1.get(0));
-        List<Cell> testList = pawnPieceService.getPossibleMoves(game, pieces1.get(0));
+        List<Cell> testList = knightPieceService.getPossibleMoves(game, pieces1.get(12));
 
 
 //        for (int i = 0; i < board.size(); i++) {
