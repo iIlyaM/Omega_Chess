@@ -24,11 +24,7 @@ public class KnightPieceService implements IPieceService {
         return possibleMoves;
     }
 
-    private List<Cell> findKnightMoves(
-            Game game,
-            Piece piece,
-            List<DirectionEnum> directionsList
-    ) {
+    private List<Cell> findKnightMoves(Game game, Piece piece, List<DirectionEnum> directionsList) {
         List<Cell> possibleMoves = new ArrayList<>();
 //        List<DirectionEnum> horizontalDirs = directionsList.subList(2, 3);
 //        List<DirectionEnum> verticalDirs = directionsList.subList(0, 1);
