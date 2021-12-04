@@ -4,6 +4,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Player;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.BishopPieceService;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.GameService;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.KnightPieceService;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.PawnPieceService;
@@ -25,11 +26,11 @@ public class Main {
         gs.initPieces(board, game, player1, player2);
         PawnPieceService pawnPieceService = new PawnPieceService();
         KnightPieceService knightPieceService = new KnightPieceService();
+        BishopPieceService bishopPieceService = new BishopPieceService();
         Set<Piece> pieces = game.getPlayer2PieceMap().get(player2);
         List<Piece> pieces1 = new ArrayList<>(pieces);
-        List<Cell> testList = knightPieceService.getPossibleMoves(game, pieces1.get(12));
-        //TODO Ещё проверить как ходят пешки (первый ход), придумать
-        //todo как проверить другое расположение фигур, вохможно где то отрефакторить
+        List<Cell> testList = bishopPieceService.getPossibleMoves(game, pieces1.get(15));
+        //TODO Посмотреть на Слона, отредактировать его ходы(как минимум одна лишняя клетка добавлена)
 
 
 //        for (int i = 0; i < board.size(); i++) {
