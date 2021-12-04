@@ -7,7 +7,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
 
 import java.util.List;
 
-public class BishopPieceService implements IPieceService{
+public class BishopPieceService implements IPieceService {
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
         return null;

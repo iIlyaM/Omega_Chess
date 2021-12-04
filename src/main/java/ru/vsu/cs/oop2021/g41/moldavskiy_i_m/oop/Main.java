@@ -28,7 +28,7 @@ public class Main {
         Set<Piece> pieces = game.getPlayer2PieceMap().get(player2);
         List<Piece> pieces1 = new ArrayList<>(pieces);
         List<Cell> testList = knightPieceService.getPossibleMoves(game, pieces1.get(12));
-        //TODO Ещё проверить как стоят короли(возможно не там где надо), как ходят пешки (первый ход), придумать
+        //TODO Ещё проверить как ходят пешки (первый ход), придумать
         //todo как проверить другое расположение фигур, вохможно где то отрефакторить
 
 

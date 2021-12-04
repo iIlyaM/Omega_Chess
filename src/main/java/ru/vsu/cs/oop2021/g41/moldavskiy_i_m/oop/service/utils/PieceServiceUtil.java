@@ -25,4 +25,19 @@ public class PieceServiceUtil {
         return false;
     }
 
+    public static boolean isPawnMoveAvailable(Game game, Cell testedCell) {
+        if (testedCell != null) {
+            return game.getCell2PieceMap().get(testedCell) == null;
+        }
+        return false;
+    }
+
+        public static boolean isPawnAttackMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return (game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
+        }
+        return false;
+    }
+
 }
