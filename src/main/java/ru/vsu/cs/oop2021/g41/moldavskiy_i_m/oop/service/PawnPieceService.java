@@ -6,7 +6,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.utils.PieceServiceUtil;
+
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class PawnPieceService implements IPieceService {
         List<Cell> possibleMoves = new ArrayList<>();
         //Set<Cell> possibleMoves = new LinkedHashSet<>();
         Set<Cell> beatMoves = new LinkedHashSet<>();
-        DirectionEnum direction = PieceServiceUtil.getDirection(piece);
+        DirectionEnum direction = getDirection(piece);
 
         if(isFirstPawnMove(game, piece)) {
             possibleMoves.addAll(firstPawnStep(game, piece, direction));
@@ -47,11 +47,11 @@ public class PawnPieceService implements IPieceService {
             firstSteps.add(nextCell);
 
             nextCell = currCell.getNeighbors().get(direction);
-            if(PieceServiceUtil.isMoveAvailable(game, piece, nextLeftCell)) {
+            if(isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
                 firstSteps.add(nextLeftCell);
             }
 
-            if(PieceServiceUtil.isMoveAvailable(game, piece, nextRightCell)) {
+            if(isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
                 firstSteps.add(nextRightCell);
             }
             currCell = nextCell;
@@ -66,15 +66,15 @@ public class PawnPieceService implements IPieceService {
         Cell nextLeftCell = nextCell.getNeighbors().get(DirectionEnum.WEST);
         Cell nextRightCell = nextCell.getNeighbors().get(DirectionEnum.EAST);
 
-        if (PieceServiceUtil.isPawnMoveAvailable(game, nextCell)) {
+        if (isPawnMoveAvailable(game, nextCell)) {
             availableCells.add(nextCell);
         }
 
-        if (PieceServiceUtil.isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
+        if (isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
             availableCells.add(nextLeftCell);
         }
 
-        if (PieceServiceUtil.isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
+        if (isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
             availableCells.add(nextCell);
         }
 
@@ -93,6 +93,29 @@ public class PawnPieceService implements IPieceService {
 
         Cell prevCell = currCell.getNeighbors().get(dir);
         return prevCell.getNeighbors().get(dir) == null;
+    }
+
+    private boolean isPawnMoveAvailable(Game game, Cell testedCell) {
+        if (testedCell != null) {
+            return game.getCell2PieceMap().get(testedCell) == null;
+        }
+        return false;
+    }
+
+    private boolean isPawnAttackMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return (game.getCell2PieceMap().get(testedCell) != null) &&
+                    (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
+        }
+        return false;
+    }
+
+    private DirectionEnum getDirection(Piece piece) {
+        if(piece.getPieceColor() == ColorEnum.BLACK) {
+            return DirectionEnum.SOUTH;
+        } else {
+            return DirectionEnum.NORTH;
+        }
     }
 
 

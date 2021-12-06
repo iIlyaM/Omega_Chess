@@ -5,7 +5,6 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.utils.PieceServiceUtil;
 
 import java.util.*;
 
@@ -33,18 +32,34 @@ public class BishopPieceService implements IPieceService {
         for (int i = 0; i < directionEnumList.size(); i++) {
             dir = directionEnumList.get(i);
             nextCell = receivedCell.getNeighbors().get(dir);
-            while (PieceServiceUtil.isMoveAvailable(game, piece, nextCell)) {
+            while (isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
                 currCell = nextCell;
                 nextCell = currCell.getNeighbors().get(dir);
+                if(checkEnemyPieceCell(game, piece, nextCell) && checkEnemyPieceCell(game, piece, currCell)) {
+                    break;
+                }
             }
         }
-        //todo Подкорректировать условия, добавляет 1 лишню фигуру
         return possibleMoves;
     }
 
     @Override
     public Step makeMove(Game game) {
         return null;
+    }
+
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
+
+    private boolean checkEnemyPieceCell(Game game,Piece piece, Cell testedCell) {
+        return (game.getCell2PieceMap().get(testedCell) != null) &&
+                (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
     }
 }

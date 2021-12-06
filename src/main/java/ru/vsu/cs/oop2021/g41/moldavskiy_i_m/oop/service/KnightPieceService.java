@@ -5,7 +5,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.utils.PieceServiceUtil;
+
 
 import java.util.*;
 
@@ -26,8 +26,6 @@ public class KnightPieceService implements IPieceService {
 
     private List<Cell> findKnightMoves(Game game, Piece piece, List<DirectionEnum> directionsList) {
         List<Cell> possibleMoves = new ArrayList<>();
-//        List<DirectionEnum> horizontalDirs = directionsList.subList(2, 3);
-//        List<DirectionEnum> verticalDirs = directionsList.subList(0, 1);
         DirectionEnum dir;
         Cell receivedCell = game.getPiece2CellMap().get(piece);
         Cell currentCell;
@@ -53,7 +51,7 @@ public class KnightPieceService implements IPieceService {
                             dir = directionsList.get(j);
                         }
                             tempCell = currentCell.getNeighbors().get(dir);
-                            if(PieceServiceUtil.isMoveAvailable(game, piece, tempCell)) {
+                            if(isMoveAvailable(game, piece, tempCell)) {
                                 possibleMoves.add(tempCell);
                             }
                     }
@@ -61,6 +59,15 @@ public class KnightPieceService implements IPieceService {
             }
         }
         return possibleMoves;
+    }
+
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
     }
 
     @Override

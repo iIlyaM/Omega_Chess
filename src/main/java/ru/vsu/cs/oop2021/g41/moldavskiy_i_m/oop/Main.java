@@ -27,9 +27,9 @@ public class Main {
         PawnPieceService pawnPieceService = new PawnPieceService();
         KnightPieceService knightPieceService = new KnightPieceService();
         BishopPieceService bishopPieceService = new BishopPieceService();
-        Set<Piece> pieces = game.getPlayer2PieceMap().get(player2);
+        Set<Piece> pieces = game.getPlayer2PieceMap().get(player1);
         List<Piece> pieces1 = new ArrayList<>(pieces);
-        List<Cell> testList = bishopPieceService.getPossibleMoves(game, pieces1.get(15));
+        List<Cell> testList = bishopPieceService.getPossibleMoves(game, pieces1.get(20));
         //TODO Посмотреть на Слона, отредактировать его ходы(как минимум одна лишняя клетка добавлена)
 
 
