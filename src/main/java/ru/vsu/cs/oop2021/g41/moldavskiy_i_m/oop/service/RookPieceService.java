@@ -11,17 +11,11 @@ import java.util.*;
 public class RookPieceService implements IPieceService {
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
-        List<Cell> possibleMoves = new ArrayList<>();
-        //Set<Cell> possibleMoves = new LinkedHashSet<>();
-        Set<Cell> beatMoves = new LinkedHashSet<>();
         List<DirectionEnum> directionEnumList =
                 Arrays.asList(DirectionEnum.NORTH, DirectionEnum.EAST,
                         DirectionEnum.SOUTH, DirectionEnum.WEST);
 
-
-
-
-        return possibleMoves;
+        return new ArrayList<>(findRookMoves(game, piece, directionEnumList));
     }
 
 
@@ -48,7 +42,7 @@ public class RookPieceService implements IPieceService {
                     break;
                 }
             }
-        } //TODO перепроверить условие в Слоне и Ладье, ещё раз проверить Слона. Попробовать комбинацию checkEnemyPieceCell(game, piece, nextCell) И isMoveAvailable(game, piece, nextCell)
+        }
         return possibleMoves;
     }
 

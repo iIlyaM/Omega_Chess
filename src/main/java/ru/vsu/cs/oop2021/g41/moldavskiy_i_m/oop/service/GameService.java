@@ -182,7 +182,7 @@ public class GameService {
 //        game.getPiece2CellMap().put(testBishop, testCell);
 //        game.getPlayer2PieceMap().put(player, playerPieces);
         Cell testCell = board.get(5).get(7);
-        Piece testBishop = new Piece(PieceEnum.ROOK, ColorEnum.WHITE);
+        Piece testBishop = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
         playerPieces.add(testBishop);
         game.getCell2PieceMap().put(testCell, testBishop);
         game.getPiece2CellMap().put(testBishop, testCell);

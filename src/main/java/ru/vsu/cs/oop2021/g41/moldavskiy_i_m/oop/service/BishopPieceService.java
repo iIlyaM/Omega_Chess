@@ -11,8 +11,6 @@ import java.util.*;
 public class BishopPieceService implements IPieceService {
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
-        //Set<Cell> possibleMoves = new LinkedHashSet<>();
-        Set<Cell> beatMoves = new LinkedHashSet<>();
         List<DirectionEnum> directionEnumList =
                 Arrays.asList(DirectionEnum.NORTH_WEST, DirectionEnum.NORTH_EAST,
                         DirectionEnum.SOUTH_WEST, DirectionEnum.SOUTH_EAST);

@@ -25,9 +25,12 @@ public class Main {
         KnightPieceService knightPieceService = new KnightPieceService();
         BishopPieceService bishopPieceService = new BishopPieceService();
         RookPieceService rookPieceService = new RookPieceService();
+        ChampionPieceService championPieceService = new ChampionPieceService();
+        KingPieceService kingPieceService = new KingPieceService();
+        QueenPieceService queenPieceService = new QueenPieceService();
         Set<Piece> pieces = game.getPlayer2PieceMap().get(player1);
         List<Piece> pieces1 = new ArrayList<>(pieces);
-        List<Cell> testList = rookPieceService.getPossibleMoves(game, pieces1.get(20));
+        List<Cell> testList = queenPieceService.getPossibleMoves(game, pieces1.get(20));
         //TODO Посмотреть на Слона, отредактировать его ходы(как минимум одна лишняя клетка добавлена)
 
 

@@ -15,8 +15,6 @@ public class PawnPieceService implements IPieceService {
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
         List<Cell> possibleMoves = new ArrayList<>();
-        //Set<Cell> possibleMoves = new LinkedHashSet<>();
-        Set<Cell> beatMoves = new LinkedHashSet<>();
         DirectionEnum direction = getDirection(piece);
 
         if(isFirstPawnMove(game, piece)) {
@@ -117,6 +115,4 @@ public class PawnPieceService implements IPieceService {
             return DirectionEnum.NORTH;
         }
     }
-
-
 }

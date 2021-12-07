@@ -13,15 +13,11 @@ public class KnightPieceService implements IPieceService {
 
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
-        List<Cell> possibleMoves = new ArrayList<>();
-        //Set<Cell> possibleMoves = new LinkedHashSet<>();
-        Set<Cell> beatMoves = new LinkedHashSet<>();
 
         List<DirectionEnum> directionEnumList =
                 Arrays.asList(DirectionEnum.NORTH, DirectionEnum.EAST, DirectionEnum.SOUTH, DirectionEnum.WEST);
 
-        possibleMoves.addAll(findKnightMoves(game, piece, directionEnumList));
-        return possibleMoves;
+        return new ArrayList<>(findKnightMoves(game, piece, directionEnumList));
     }
 
     private List<Cell> findKnightMoves(Game game, Piece piece, List<DirectionEnum> directionsList) {
@@ -37,7 +33,6 @@ public class KnightPieceService implements IPieceService {
             currentCell = receivedCell;
             nextCell = currentCell.getNeighbors().get(dir);
             if(nextCell!= null) {
-                //tempCell = nextCell;
                 currentCell = nextCell;
                 nextCell = currentCell.getNeighbors().get(dir);
                 if(nextCell != null) {
