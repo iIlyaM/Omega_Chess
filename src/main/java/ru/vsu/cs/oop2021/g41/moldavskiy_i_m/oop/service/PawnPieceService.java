@@ -26,8 +26,19 @@ public class PawnPieceService implements IPieceService {
     }
 
     @Override
-    public Step makeMove(Game game) {
-        return null;
+    public Step makeMove(Game game, Piece piece, Cell targetCell) {
+        Step pawnStep = new Step();
+        Cell currPosition = game.getPiece2CellMap().get(piece);
+
+        pawnStep.setPlayer(game.getPiece2PlayerMap().get(piece));
+        pawnStep.setStartCell(currPosition);
+        pawnStep.setEndCell(targetCell);
+        pawnStep.setPiece(piece);
+        if(isTargetNotCellEmpty(game, targetCell)) {
+            pawnStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
+        }
+        game.getSteps().add(pawnStep);
+        return pawnStep;
     }
 
     private List<Cell> firstPawnStep(Game game, Piece piece, DirectionEnum direction) {
@@ -106,6 +117,10 @@ public class PawnPieceService implements IPieceService {
                     (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
         }
         return false;
+    }
+
+    private boolean isTargetNotCellEmpty(Game game,Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
     }
 
     private DirectionEnum getDirection(Piece piece) {

@@ -19,7 +19,7 @@ public class QueenPieceService implements IPieceService{
 
 
     @Override
-    public Step makeMove(Game game) {
+    public Step makeMove(Game game, Piece piece, Cell targetCell) {
         return null;
     }
 
