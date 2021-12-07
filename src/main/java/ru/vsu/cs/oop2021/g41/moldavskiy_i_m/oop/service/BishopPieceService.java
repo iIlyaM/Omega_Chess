@@ -11,16 +11,13 @@ import java.util.*;
 public class BishopPieceService implements IPieceService {
     @Override
     public List<Cell> getPossibleMoves(Game game, Piece piece) {
-        List<Cell> possibleMoves = new ArrayList<>();
         //Set<Cell> possibleMoves = new LinkedHashSet<>();
         Set<Cell> beatMoves = new LinkedHashSet<>();
         List<DirectionEnum> directionEnumList =
                 Arrays.asList(DirectionEnum.NORTH_WEST, DirectionEnum.NORTH_EAST,
                         DirectionEnum.SOUTH_WEST, DirectionEnum.SOUTH_EAST);
 
-        possibleMoves.addAll(findBishopSteps(game, piece, directionEnumList));
-
-        return possibleMoves;
+        return new ArrayList<>(findBishopSteps(game, piece, directionEnumList));
     }
 
     private List<Cell> findBishopSteps(Game game, Piece piece, List<DirectionEnum> directionEnumList) {
@@ -36,7 +33,7 @@ public class BishopPieceService implements IPieceService {
                 possibleMoves.add(nextCell);
                 currCell = nextCell;
                 nextCell = currCell.getNeighbors().get(dir);
-                if(checkEnemyPieceCell(game, piece, nextCell) && checkEnemyPieceCell(game, piece, currCell)) {
+                if(checkEnemyPieceCell(game, piece, currCell) && isMoveAvailable(game, piece, nextCell)) {
                     break;
                 }
             }

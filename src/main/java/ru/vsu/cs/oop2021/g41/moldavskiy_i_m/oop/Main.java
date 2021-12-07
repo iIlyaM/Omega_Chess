@@ -4,10 +4,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Player;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.BishopPieceService;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.GameService;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.KnightPieceService;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.PawnPieceService;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.*;
 
 import java.awt.image.Kernel;
 import java.util.ArrayList;
@@ -27,9 +24,10 @@ public class Main {
         PawnPieceService pawnPieceService = new PawnPieceService();
         KnightPieceService knightPieceService = new KnightPieceService();
         BishopPieceService bishopPieceService = new BishopPieceService();
+        RookPieceService rookPieceService = new RookPieceService();
         Set<Piece> pieces = game.getPlayer2PieceMap().get(player1);
         List<Piece> pieces1 = new ArrayList<>(pieces);
-        List<Cell> testList = bishopPieceService.getPossibleMoves(game, pieces1.get(20));
+        List<Cell> testList = rookPieceService.getPossibleMoves(game, pieces1.get(20));
         //TODO Посмотреть на Слона, отредактировать его ходы(как минимум одна лишняя клетка добавлена)
 
 

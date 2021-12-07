@@ -17,6 +17,10 @@ public class RookPieceService implements IPieceService {
         List<DirectionEnum> directionEnumList =
                 Arrays.asList(DirectionEnum.NORTH, DirectionEnum.EAST,
                         DirectionEnum.SOUTH, DirectionEnum.WEST);
+
+
+
+
         return possibleMoves;
     }
 
@@ -40,7 +44,7 @@ public class RookPieceService implements IPieceService {
                 possibleMoves.add(nextCell);
                 currentCell = nextCell;
                 nextCell = currentCell.getNeighbors().get(direction);
-                if(checkEnemyPieceCell(game, piece, nextCell) && checkEnemyPieceCell(game, piece, currentCell)) {
+                if(checkEnemyPieceCell(game, piece, currentCell) && checkEnemyPieceCell(game, piece, currentCell)) {
                     break;
                 }
             }
