@@ -12,6 +12,26 @@ public class GameService {
 
     public static final int BOARD_SIZE = 10;
 
+    private Map<PieceEnum, IPieceService> piece2ServiceMap;
+
+    public GameService(Map<PieceEnum, IPieceService> pieceServiceMap) {
+        this.piece2ServiceMap = piece2ServiceMap;
+    }
+
+    public Game initGame() {
+        Game game = new Game();
+        Player firstPlayer = new Player("Василий");
+        Player secondPlayer = new Player("Геннадий");
+        List<List<Cell>> gameBoard = initBoard();
+        initPieces(gameBoard, game, firstPlayer, secondPlayer);
+        return game;
+    }
+
+    public void startGameProcess(Game game) {
+        Queue<Player> players = new ArrayDeque<>();
+
+    }
+
     public List<List<Cell>> initBoard() {
         List<List<Cell>> rows = new ArrayList<>();
 
@@ -150,10 +170,6 @@ public class GameService {
 
         initSpecialPiece(game, queenPiece, queenCell, playerPieces, player);
         initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
-//        playerPieces.add(queenPiece);
-//        game.getCell2PieceMap().put(queenCell, queenPiece);
-//        game.getPiece2CellMap().put(queenPiece, queenCell);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initRightWhitePieces(
@@ -178,28 +194,6 @@ public class GameService {
 
         initSpecialPiece(game, piece, kingCell, playerPieces, player);
         initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
-//        game.getCell2PieceMap().put(kingCell, piece);
-//        game.getPiece2CellMap().put(piece, kingCell);
-//        playerPieces.add(piece);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
-
-
-        /**
-         * Для теста :
-         */
-
-//        Cell testCell = board.get(5).get(7);
-//        Piece testBishop = new Piece(PieceEnum.BISHOP, ColorEnum.WHITE);
-//        playerPieces.add(testBishop);
-//        game.getCell2PieceMap().put(testCell, testBishop);
-//        game.getPiece2CellMap().put(testBishop, testCell);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
-//        Cell testCell = board.get(5).get(7);
-//        Piece testBishop = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
-//        playerPieces.add(testBishop);
-//        game.getCell2PieceMap().put(testCell, testBishop);
-//        game.getPiece2CellMap().put(testBishop, testCell);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initLeftBlackPieces(
@@ -224,21 +218,6 @@ public class GameService {
 
         initSpecialPiece(game, queenPiece, queenCell, playerPieces, player);
         initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
-//        playerPieces.add(queenPiece);
-//        game.getCell2PieceMap().put(queenCell, queenPiece);
-//        game.getPiece2CellMap().put(queenPiece, queenCell);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
-
-        /**
-         * Для теста :
-         */
-//        Cell testCell = board.get(4).get(3);
-//        Piece testBishop = new Piece(PieceEnum.BISHOP, ColorEnum.BLACK);
-//        playerPieces.add(testBishop);
-//        game.getCell2PieceMap().put(testCell, testBishop);
-//        game.getPiece2CellMap().put(testBishop, testCell);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
-
     }
 
     private void initRightBlackPieces(
@@ -265,18 +244,9 @@ public class GameService {
 
         initSpecialPiece(game, kingPiece, kingCell, playerPieces, player);
         initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
-
-//        game.getCell2PieceMap().put(kingCell, kingPiece);
-//        game.getPiece2CellMap().put(kingPiece, kingCell);
-//        playerPieces.add(kingPiece);
-//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initWizardsCells(List<List<Cell>> board) {
-//        Cell northWestCell = board.get(0).get(0);
-//        Cell northEastCell = board.get(0).get(board.size() - 1);
-//        Cell southWestCell = board.get(board.size() - 1).get(0);
-//        Cell southEastCell = board.get(board.size() - 1).get(board.size() - 1);
         Cell borderCell;
         Cell newWizardCell;
         int[] borderIndexes = {0, board.size() - 1};

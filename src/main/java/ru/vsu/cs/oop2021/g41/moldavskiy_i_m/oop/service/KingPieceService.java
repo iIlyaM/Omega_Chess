@@ -1,10 +1,8 @@
 package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service;
 
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class KingPieceService implements IPieceService {
         Cell nextCell;
         for (DirectionEnum direction : DirectionEnum.values()) {
             nextCell = receivedCell.getNeighbors().get(direction);
-            if (isMoveAvailable(game, piece, nextCell)) {
+            if (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
             }
 
@@ -32,15 +30,32 @@ public class KingPieceService implements IPieceService {
 
     @Override
     public Step makeMove(Game game, Piece piece, Cell targetCell) {
-        return null;
+        Step kingStep = new Step();
+        Cell currPosition = game.getPiece2CellMap().get(piece);
+
+        kingStep.setPlayer(game.getPiece2PlayerMap().get(piece));
+        kingStep.setStartCell(currPosition);
+        kingStep.setEndCell(targetCell);
+        kingStep.setPiece(piece);
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+            kingStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
+        }
+        game.getSteps().add(kingStep);
+        changeOnBoardPlacement(game, piece, targetCell, currPosition);
+        return kingStep;
     }
 
-    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
-        if (testedCell != null) {
-            return ((game.getCell2PieceMap().get(testedCell) == null) ||
-                    ((game.getCell2PieceMap().get(testedCell) != null) &&
-                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+
+    private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
+        Player rival;
+        Piece targetPiece;
+        game.getPiece2CellMap().replace(piece, targetCell);
+        game.getCell2PieceMap().put(targetCell, piece);
+        game.getCell2PieceMap().remove(currPosition, piece);
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+            targetPiece = game.getCell2PieceMap().get(targetCell);
+            rival = game.getPiece2PlayerMap().get(targetPiece);
+            game.getPlayer2PieceMap().get(rival).remove(targetPiece);
         }
-        return false;
     }
 }

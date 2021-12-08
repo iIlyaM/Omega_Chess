@@ -1,10 +1,8 @@
 package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service;
 
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
 
 import java.util.*;
 
@@ -21,7 +19,19 @@ public class RookPieceService implements IPieceService {
 
     @Override
     public Step makeMove(Game game, Piece piece, Cell targetCell) {
-        return null;
+        Step rookStep = new Step();
+        Cell currPosition = game.getPiece2CellMap().get(piece);
+
+        rookStep.setPlayer(game.getPiece2PlayerMap().get(piece));
+        rookStep.setStartCell(currPosition);
+        rookStep.setEndCell(targetCell);
+        rookStep.setPiece(piece);
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+            rookStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
+        }
+        game.getSteps().add(rookStep);
+        changeOnBoardPlacement(game, piece, targetCell, currPosition);
+        return rookStep;
     }
 
     private List<Cell> findRookMoves(Game game, Piece piece, List<DirectionEnum> directionEnumList) {
@@ -34,11 +44,12 @@ public class RookPieceService implements IPieceService {
         for (int i = 0; i < directionEnumList.size(); i++) {
             direction = directionEnumList.get(i);
             nextCell = receivedCell.getNeighbors().get(direction);
-            while (isMoveAvailable(game, piece, nextCell)) {
+            while (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
                 currentCell = nextCell;
                 nextCell = currentCell.getNeighbors().get(direction);
-                if(checkEnemyPieceCell(game, piece, currentCell) && checkEnemyPieceCell(game, piece, currentCell)) {
+                if(CheckMovesUtils.checkEnemyPieceCell(game, piece, currentCell) &&
+                        CheckMovesUtils.isMoveAvailable(game, piece, currentCell)) {
                     break;
                 }
             }
@@ -46,17 +57,18 @@ public class RookPieceService implements IPieceService {
         return possibleMoves;
     }
 
-    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
-        if (testedCell != null) {
-            return ((game.getCell2PieceMap().get(testedCell) == null) ||
-                    ((game.getCell2PieceMap().get(testedCell) != null) &&
-                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+    private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
+        Player rival;
+        Piece targetPiece;
+        game.getPiece2CellMap().replace(piece, targetCell);
+        game.getCell2PieceMap().put(targetCell, piece);
+        game.getCell2PieceMap().remove(currPosition, piece);
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+            targetPiece = game.getCell2PieceMap().get(targetCell);
+            rival = game.getPiece2PlayerMap().get(targetPiece);
+            game.getPlayer2PieceMap().get(rival).remove(targetPiece);
         }
-        return false;
     }
 
-    private boolean checkEnemyPieceCell(Game game,Piece piece, Cell testedCell) {
-        return (game.getCell2PieceMap().get(testedCell) != null) &&
-                (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
-    }
+
 }

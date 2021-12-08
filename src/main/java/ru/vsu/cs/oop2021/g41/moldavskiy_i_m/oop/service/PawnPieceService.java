@@ -3,6 +3,7 @@ package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
 
 
 import java.util.*;
@@ -31,7 +32,7 @@ public class PawnPieceService implements IPieceService {
         pawnStep.setStartCell(currPosition);
         pawnStep.setEndCell(targetCell);
         pawnStep.setPiece(piece);
-        if(isTargetCellNotEmpty(game, targetCell)) {
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
             pawnStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(pawnStep);
@@ -118,9 +119,6 @@ public class PawnPieceService implements IPieceService {
         return false;
     }
 
-    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
-        return game.getCell2PieceMap().get(targetCell) != null;
-    }
 
     private DirectionEnum getDirection(Piece piece) {
         if(piece.getPieceColor() == ColorEnum.BLACK) {
@@ -136,7 +134,7 @@ public class PawnPieceService implements IPieceService {
         game.getPiece2CellMap().replace(piece, targetCell);
         game.getCell2PieceMap().put(targetCell, piece);
         game.getCell2PieceMap().remove(currPosition, piece);
-        if(isTargetCellNotEmpty(game, targetCell)) {
+        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
