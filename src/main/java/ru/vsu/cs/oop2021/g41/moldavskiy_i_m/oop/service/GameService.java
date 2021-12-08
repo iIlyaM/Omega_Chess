@@ -5,6 +5,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.PieceEnum;
 
+import java.security.cert.PKIXCertPathChecker;
 import java.util.*;
 
 public class GameService {
@@ -143,10 +144,16 @@ public class GameService {
         }
         Cell queenCell = board.get(9).get(((BOARD_SIZE - 2) / 2));
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
-        playerPieces.add(queenPiece);
-        game.getCell2PieceMap().put(queenCell, queenPiece);
-        game.getPiece2CellMap().put(queenPiece, queenCell);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+
+        Cell wizardCell = board.get(BOARD_SIZE - 1).get(0).getNeighbors().get(DirectionEnum.SOUTH_WEST);
+        Piece wizardPiece = new Piece(PieceEnum.WIZARD, ColorEnum.WHITE);
+
+        initSpecialPiece(game, queenPiece, queenCell, playerPieces, player);
+        initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
+//        playerPieces.add(queenPiece);
+//        game.getCell2PieceMap().put(queenCell, queenPiece);
+//        game.getPiece2CellMap().put(queenPiece, queenCell);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initRightWhitePieces(
@@ -165,10 +172,16 @@ public class GameService {
         }
         Cell kingCell = board.get(BOARD_SIZE - 1).get(((BOARD_SIZE - 2) / 2) + 1);
         Piece piece = new Piece(PieceEnum.KING, ColorEnum.WHITE);
-        game.getCell2PieceMap().put(kingCell, piece);
-        game.getPiece2CellMap().put(piece, kingCell);
-        playerPieces.add(piece);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+
+        Cell wizardCell = board.get(BOARD_SIZE - 1).get(BOARD_SIZE - 1).getNeighbors().get(DirectionEnum.SOUTH_EAST);
+        Piece wizardPiece = new Piece(PieceEnum.WIZARD, ColorEnum.WHITE);
+
+        initSpecialPiece(game, piece, kingCell, playerPieces, player);
+        initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
+//        game.getCell2PieceMap().put(kingCell, piece);
+//        game.getPiece2CellMap().put(piece, kingCell);
+//        playerPieces.add(piece);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
 
 
         /**
@@ -181,12 +194,12 @@ public class GameService {
 //        game.getCell2PieceMap().put(testCell, testBishop);
 //        game.getPiece2CellMap().put(testBishop, testCell);
 //        game.getPlayer2PieceMap().put(player, playerPieces);
-        Cell testCell = board.get(5).get(7);
-        Piece testBishop = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
-        playerPieces.add(testBishop);
-        game.getCell2PieceMap().put(testCell, testBishop);
-        game.getPiece2CellMap().put(testBishop, testCell);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+//        Cell testCell = board.get(5).get(7);
+//        Piece testBishop = new Piece(PieceEnum.QUEEN, ColorEnum.WHITE);
+//        playerPieces.add(testBishop);
+//        game.getCell2PieceMap().put(testCell, testBishop);
+//        game.getPiece2CellMap().put(testBishop, testCell);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initLeftBlackPieces(
@@ -205,20 +218,26 @@ public class GameService {
         }
         Cell queenCell = board.get(0).get(((BOARD_SIZE - 2) / 2));
         Piece queenPiece = new Piece(PieceEnum.QUEEN, ColorEnum.BLACK);
-        playerPieces.add(queenPiece);
-        game.getCell2PieceMap().put(queenCell, queenPiece);
-        game.getPiece2CellMap().put(queenPiece, queenCell);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+
+        Cell wizardCell = board.get(0).get(0).getNeighbors().get(DirectionEnum.NORTH_WEST);
+        Piece wizardPiece = new Piece(PieceEnum.WIZARD, ColorEnum.BLACK);
+
+        initSpecialPiece(game, queenPiece, queenCell, playerPieces, player);
+        initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
+//        playerPieces.add(queenPiece);
+//        game.getCell2PieceMap().put(queenCell, queenPiece);
+//        game.getPiece2CellMap().put(queenPiece, queenCell);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
 
         /**
          * Для теста :
          */
-        Cell testCell = board.get(4).get(3);
-        Piece testBishop = new Piece(PieceEnum.BISHOP, ColorEnum.BLACK);
-        playerPieces.add(testBishop);
-        game.getCell2PieceMap().put(testCell, testBishop);
-        game.getPiece2CellMap().put(testBishop, testCell);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+//        Cell testCell = board.get(4).get(3);
+//        Piece testBishop = new Piece(PieceEnum.BISHOP, ColorEnum.BLACK);
+//        playerPieces.add(testBishop);
+//        game.getCell2PieceMap().put(testCell, testBishop);
+//        game.getPiece2CellMap().put(testBishop, testCell);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
 
     }
 
@@ -240,34 +259,61 @@ public class GameService {
 
         Cell kingCell = board.get(0).get(((BOARD_SIZE - 2) / 2) + 1);
         Piece kingPiece = new Piece(PieceEnum.KING, ColorEnum.BLACK);
-        game.getCell2PieceMap().put(kingCell, kingPiece);
-        game.getPiece2CellMap().put(kingPiece, kingCell);
-        playerPieces.add(kingPiece);
-        game.getPlayer2PieceMap().put(player, playerPieces);
+
+        Cell wizardCell = board.get(0).get(BOARD_SIZE - 1).getNeighbors().get(DirectionEnum.NORTH_EAST);
+        Piece wizardPiece = new Piece(PieceEnum.WIZARD, ColorEnum.BLACK);
+
+        initSpecialPiece(game, kingPiece, kingCell, playerPieces, player);
+        initSpecialPiece(game, wizardPiece, wizardCell, playerPieces, player);
+
+//        game.getCell2PieceMap().put(kingCell, kingPiece);
+//        game.getPiece2CellMap().put(kingPiece, kingCell);
+//        playerPieces.add(kingPiece);
+//        game.getPlayer2PieceMap().put(player, playerPieces);
     }
 
     private void initWizardsCells(List<List<Cell>> board) {
-        Cell northWestCell = board.get(0).get(0);
-        Cell northEastCell = board.get(0).get(board.size() - 1);
-        Cell southWestCell = board.get(board.size() - 1).get(0);
-        Cell southEastCell = board.get(board.size() - 1).get(board.size() - 1);
+//        Cell northWestCell = board.get(0).get(0);
+//        Cell northEastCell = board.get(0).get(board.size() - 1);
+//        Cell southWestCell = board.get(board.size() - 1).get(0);
+//        Cell southEastCell = board.get(board.size() - 1).get(board.size() - 1);
+        Cell borderCell;
+        Cell newWizardCell;
+        int[] borderIndexes = {0, board.size() - 1};
 
+        for (int i = 0; i < borderIndexes.length; i++) {
+            for (int j = 0; j <borderIndexes.length ; j++) {
+                borderCell = board.get(borderIndexes[i]).get(borderIndexes[j]);
+                if(borderIndexes[i] < borderIndexes[j]) {
+                    newWizardCell = new Cell(borderCell.getColor());
+                    borderCell.getNeighbors().put(DirectionEnum.NORTH_EAST, newWizardCell);
+                    newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, borderCell);
+                }
+                if(borderIndexes[i] > borderIndexes[j]) {
+                    newWizardCell = new Cell(borderCell.getColor());
+                    borderCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, newWizardCell);
+                    newWizardCell.getNeighbors().put(DirectionEnum.NORTH_EAST, borderCell);
+                }
 
-        northWestCell.getNeighbors().put(DirectionEnum.NORTH_WEST, new Cell(northWestCell.getColor()));
-        northWestCell.getNeighbors().get(DirectionEnum.NORTH_WEST).getNeighbors().
-                put(DirectionEnum.SOUTH_EAST, northWestCell);
-
-        northEastCell.getNeighbors().put(DirectionEnum.NORTH_EAST, new Cell(northEastCell.getColor()));
-        northEastCell.getNeighbors().get(DirectionEnum.NORTH_EAST).getNeighbors().
-                put(DirectionEnum.SOUTH_WEST, northEastCell);
-
-        southWestCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, new Cell(southWestCell.getColor()));
-        southWestCell.getNeighbors().get(DirectionEnum.SOUTH_WEST).getNeighbors().
-                put(DirectionEnum.NORTH_EAST, southWestCell);
-
-        southEastCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, new Cell(southEastCell.getColor()));
-        southEastCell.getNeighbors().get(DirectionEnum.SOUTH_EAST).getNeighbors().
-                put(DirectionEnum.NORTH_WEST, southEastCell);
-        //todo от рефакторить
+                if((borderIndexes[i] == 0) && (borderIndexes[i] == borderIndexes[j])) {
+                    newWizardCell = new Cell(borderCell.getColor());
+                    borderCell.getNeighbors().put(DirectionEnum.NORTH_WEST, newWizardCell);
+                    newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, borderCell);
+                }
+                if((borderIndexes[i] == 9) && (borderIndexes[i] == borderIndexes[j])) {
+                    newWizardCell = new Cell(borderCell.getColor());
+                    borderCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, newWizardCell);
+                    newWizardCell.getNeighbors().put(DirectionEnum.NORTH_WEST, borderCell);
+                }
+            }
+        }
     }
-}
+
+    private void initSpecialPiece(Game game, Piece piece, Cell cell, Set<Piece> pieces, Player player) {
+        game.getPiece2CellMap().put(piece, cell);
+        game.getCell2PieceMap().put(cell, piece);
+        pieces.add(piece);
+        game.getPlayer2PieceMap().put(player, pieces);
+        game.getPiece2PlayerMap().put(piece, player);
+    }
+ }

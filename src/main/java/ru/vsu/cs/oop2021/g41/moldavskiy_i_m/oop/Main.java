@@ -4,13 +4,12 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Player;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.PieceEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.*;
 
 import java.awt.image.Kernel;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -32,8 +31,6 @@ public class Main {
         List<Piece> pieces1 = new ArrayList<>(pieces);
         List<Cell> testList = queenPieceService.getPossibleMoves(game, pieces1.get(20));
         //TODO Посмотреть на Слона, отредактировать его ходы(как минимум одна лишняя клетка добавлена)
-
-
 //        for (int i = 0; i < board.size(); i++) {
 //            for (int j = 0; j < board.size(); j++) {
 //                if(game.getCell2PieceMap().get(board.get(i).get(j)).getPieceType() != null) {

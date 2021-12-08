@@ -1,9 +1,6 @@
 package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service;
 
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Cell;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Game;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Piece;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.Step;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
 
@@ -34,12 +31,14 @@ public class PawnPieceService implements IPieceService {
         pawnStep.setStartCell(currPosition);
         pawnStep.setEndCell(targetCell);
         pawnStep.setPiece(piece);
-        if(isTargetNotCellEmpty(game, targetCell)) {
+        if(isTargetCellNotEmpty(game, targetCell)) {
             pawnStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(pawnStep);
+        changeOnBoardPlacement(game, piece, targetCell, currPosition);
         return pawnStep;
     }
+
 
     private List<Cell> firstPawnStep(Game game, Piece piece, DirectionEnum direction) {
         List<Cell> firstSteps = new ArrayList<>();
@@ -119,7 +118,7 @@ public class PawnPieceService implements IPieceService {
         return false;
     }
 
-    private boolean isTargetNotCellEmpty(Game game,Cell targetCell) {
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
         return game.getCell2PieceMap().get(targetCell) != null;
     }
 
@@ -130,4 +129,19 @@ public class PawnPieceService implements IPieceService {
             return DirectionEnum.NORTH;
         }
     }
+
+    private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
+        Player rival;
+        Piece targetPiece;
+        game.getPiece2CellMap().replace(piece, targetCell);
+        game.getCell2PieceMap().put(targetCell, piece);
+        game.getCell2PieceMap().remove(currPosition, piece);
+        if(isTargetCellNotEmpty(game, targetCell)) {
+            targetPiece = game.getCell2PieceMap().get(targetCell);
+            rival = game.getPiece2PlayerMap().get(targetPiece);
+            game.getPlayer2PieceMap().get(rival).remove(targetPiece);
+        }
+    }
+
+
 }
