@@ -29,7 +29,9 @@ public class GameService {
 
     public void startGameProcess(Game game) {
         Queue<Player> players = new ArrayDeque<>();
-        players.addAll(game.getPlayers(game.getPlayer2PieceMap()));
+
+        game.getPlayer2PieceMap().forEach((key, value) -> players.add(key));
+        //
         Set<Piece> pieces;
         do {
             Player currPlayer = players.poll();
@@ -47,10 +49,10 @@ public class GameService {
                 piece = piecesList.get(randomPiece.nextInt(piecesList.size()));
                 pieceService = piece2ServiceMap.get(piece.getPieceType());
                 possibleMoves = pieceService.getPossibleMoves(game, piece);
-            } while(possibleMoves.size() == 0);
+            } while (possibleMoves.size() == 0);
             pieceService.makeMove(game, piece, possibleMoves.get(randomStep.nextInt(
                     possibleMoves.size())));
-        } while(CheckMovesUtils.isKingAlive(pieces));
+        } while (CheckMovesUtils.isKingAlive(pieces));
     }
 
 
@@ -68,14 +70,14 @@ public class GameService {
             piece = currStep.getPiece().getPieceType().toString();
             currCell = currStep.getStartCell().getConsoleCoordinates();
             targetCell = currStep.getEndCell().getConsoleCoordinates();
-            if(currStep.getKilledPiece() != null) {
+            if (currStep.getKilledPiece() != null) {
                 killedPiece = currStep.getKilledPiece().getPieceType().toString();
             } else {
                 killedPiece = "Вражеских фигур не срублено";
             }
             System.out.println("Игрок : " + currPlayer + " ходит фигурой " + piece + " с ячейки " + currCell +
                     " на ячейку " + targetCell);
-            System.out.println("В результате хода срублена фигура : " + killedPiece  + "\n");
+            System.out.println("В результате хода срублена фигура : " + killedPiece + "\n");
         }
     }
 
@@ -109,12 +111,12 @@ public class GameService {
                         Cell prevRowCell = prevRow.get(k);
                         currRowCell.getNeighbors().put(DirectionEnum.NORTH, prevRowCell);
                         prevRowCell.getNeighbors().put(DirectionEnum.SOUTH, currRowCell);
-                        if(k > 0) {
+                        if (k > 0) {
                             leftNorthDiagonalCell = prevRow.get(k - 1);
                             currRowCell.getNeighbors().put(DirectionEnum.NORTH_WEST, leftNorthDiagonalCell);
                             leftNorthDiagonalCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, currRowCell);
                         }
-                        if(k < currRow.size() - 1) {
+                        if (k < currRow.size() - 1) {
                             rightNorthDiagonalCell = prevRow.get(k + 1);
                             currRowCell.getNeighbors().put(DirectionEnum.NORTH_EAST, rightNorthDiagonalCell);
                             rightNorthDiagonalCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, currRowCell);
@@ -126,7 +128,7 @@ public class GameService {
             prevRow = currRow;
         }
         initWizardsCells(rows);
-         return rows;
+        return rows;
     }
 
     public void initPieces(List<List<Cell>> board, Game game, Player firstPlayer, Player secondPlayer) {
@@ -302,25 +304,25 @@ public class GameService {
         int[] borderIndexes = {0, board.size() - 1};
 
         for (int i = 0; i < borderIndexes.length; i++) {
-            for (int j = 0; j <borderIndexes.length ; j++) {
+            for (int j = 0; j < borderIndexes.length; j++) {
                 borderCell = board.get(borderIndexes[i]).get(borderIndexes[j]);
-                if(borderIndexes[i] < borderIndexes[j]) {
+                if (borderIndexes[i] < borderIndexes[j]) {
                     newWizardCell = new Cell(borderCell.getColor(), "wizardWhiteLeft");
                     borderCell.getNeighbors().put(DirectionEnum.NORTH_EAST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, borderCell);
                 }
-                if(borderIndexes[i] > borderIndexes[j]) {
+                if (borderIndexes[i] > borderIndexes[j]) {
                     newWizardCell = new Cell(borderCell.getColor(), "wizardBlackRight");
                     borderCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.NORTH_EAST, borderCell);
                 }
 
-                if((borderIndexes[i] == 0) && (borderIndexes[i] == borderIndexes[j])) {
+                if ((borderIndexes[i] == 0) && (borderIndexes[i] == borderIndexes[j])) {
                     newWizardCell = new Cell(borderCell.getColor(), "wizardBlackLeft");
                     borderCell.getNeighbors().put(DirectionEnum.NORTH_WEST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, borderCell);
                 }
-                if((borderIndexes[i] == 9) && (borderIndexes[i] == borderIndexes[j])) {
+                if ((borderIndexes[i] == 9) && (borderIndexes[i] == borderIndexes[j])) {
                     newWizardCell = new Cell(borderCell.getColor(), "wizardWhiteRight");
                     borderCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.NORTH_WEST, borderCell);
@@ -336,4 +338,4 @@ public class GameService {
         game.getPlayer2PieceMap().put(player, pieces);
         game.getPiece2PlayerMap().put(piece, player);
     }
- }
+}

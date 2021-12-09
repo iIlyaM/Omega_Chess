@@ -22,7 +22,7 @@ public class ChampionPieceService implements IPieceService {
         championPiece.setStartCell(currPosition);
         championPiece.setEndCell(targetCell);
         championPiece.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             championPiece.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(championPiece);
@@ -41,19 +41,19 @@ public class ChampionPieceService implements IPieceService {
             if (counter % 2 == 0) {
                 nextCell = receivedCell.getNeighbors().get(direction);
                 for (int i = 0; i < 2; i++) {
-                    if (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+                    if (isMoveAvailable(game, piece, nextCell)) {
                         possibleMoves.add(nextCell);
                         currentCell = nextCell;
                         nextCell = currentCell.getNeighbors().get(direction);
                     }
                 }
             }
-            if(counter % 2 != 0) {
+            if (counter % 2 != 0) {
                 nextCell = receivedCell.getNeighbors().get(direction);
-                if(nextCell != null) {
+                if (nextCell != null) {
                     currentCell = nextCell;
                     nextCell = currentCell.getNeighbors().get(direction);
-                    if(CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+                    if (isMoveAvailable(game, piece, nextCell)) {
                         possibleMoves.add(nextCell);
                     }
                 }
@@ -66,7 +66,7 @@ public class ChampionPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -76,5 +76,16 @@ public class ChampionPieceService implements IPieceService {
         game.getCell2PieceMap().remove(currPosition, piece);
     }
 
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
 
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
+    }
 }

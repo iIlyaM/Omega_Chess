@@ -25,11 +25,11 @@ public class BishopPieceService implements IPieceService {
         for (int i = 0; i < directionEnumList.size(); i++) {
             dir = directionEnumList.get(i);
             nextCell = receivedCell.getNeighbors().get(dir);
-            while (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+            while (isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
                 currCell = nextCell;
                 nextCell = currCell.getNeighbors().get(dir);
-                if(CheckMovesUtils.checkEnemyPieceCell(game, piece, currCell) && CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+                if (checkEnemyPieceCell(game, piece, currCell) && isMoveAvailable(game, piece, nextCell)) {
                     break;
                 }
             }
@@ -46,7 +46,7 @@ public class BishopPieceService implements IPieceService {
         bishopStep.setStartCell(currPosition);
         bishopStep.setEndCell(targetCell);
         bishopStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             bishopStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(bishopStep);
@@ -57,7 +57,7 @@ public class BishopPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -67,5 +67,21 @@ public class BishopPieceService implements IPieceService {
         game.getCell2PieceMap().remove(currPosition, piece);
     }
 
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
 
+    private boolean checkEnemyPieceCell(Game game,Piece piece, Cell testedCell) {
+        return (game.getCell2PieceMap().get(testedCell) != null) &&
+                (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
+    }
+
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
+    }
 }

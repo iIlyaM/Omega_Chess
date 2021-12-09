@@ -20,7 +20,7 @@ public class KingPieceService implements IPieceService {
         Cell nextCell;
         for (DirectionEnum direction : DirectionEnum.values()) {
             nextCell = receivedCell.getNeighbors().get(direction);
-            if (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+            if (isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
             }
 
@@ -37,7 +37,7 @@ public class KingPieceService implements IPieceService {
         kingStep.setStartCell(currPosition);
         kingStep.setEndCell(targetCell);
         kingStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             kingStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(kingStep);
@@ -49,7 +49,7 @@ public class KingPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -57,5 +57,18 @@ public class KingPieceService implements IPieceService {
         game.getPiece2CellMap().put(piece, targetCell);
         game.getCell2PieceMap().put(targetCell, piece);
         game.getCell2PieceMap().remove(currPosition, piece);
+    }
+
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
+
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
     }
 }

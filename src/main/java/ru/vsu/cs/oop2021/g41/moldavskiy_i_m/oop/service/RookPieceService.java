@@ -26,7 +26,7 @@ public class RookPieceService implements IPieceService {
         rookStep.setStartCell(currPosition);
         rookStep.setEndCell(targetCell);
         rookStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             rookStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(rookStep);
@@ -44,12 +44,12 @@ public class RookPieceService implements IPieceService {
         for (int i = 0; i < directionEnumList.size(); i++) {
             direction = directionEnumList.get(i);
             nextCell = receivedCell.getNeighbors().get(direction);
-            while (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+            while (isMoveAvailable(game, piece, nextCell)) {
                 possibleMoves.add(nextCell);
                 currentCell = nextCell;
                 nextCell = currentCell.getNeighbors().get(direction);
-                if(CheckMovesUtils.checkEnemyPieceCell(game, piece, currentCell) &&
-                        CheckMovesUtils.isMoveAvailable(game, piece, currentCell)) {
+                if (checkEnemyPieceCell(game, piece, currentCell) &&
+                        isMoveAvailable(game, piece, currentCell)) {
                     break;
                 }
             }
@@ -60,7 +60,7 @@ public class RookPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -70,4 +70,21 @@ public class RookPieceService implements IPieceService {
         game.getCell2PieceMap().remove(currPosition, piece);
     }
 
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
+
+    private boolean checkEnemyPieceCell(Game game,Piece piece, Cell testedCell) {
+        return (game.getCell2PieceMap().get(testedCell) != null) &&
+                (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor());
+    }
+
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
+    }
 }

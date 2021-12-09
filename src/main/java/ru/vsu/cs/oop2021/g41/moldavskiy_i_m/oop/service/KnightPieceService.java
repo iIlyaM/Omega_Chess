@@ -30,23 +30,23 @@ public class KnightPieceService implements IPieceService {
             dir = directionsList.get(i);
             currentCell = receivedCell;
             nextCell = currentCell.getNeighbors().get(dir);
-            if(nextCell!= null) {
+            if (nextCell != null) {
                 currentCell = nextCell;
                 nextCell = currentCell.getNeighbors().get(dir);
-                if(nextCell != null) {
+                if (nextCell != null) {
                     currentCell = nextCell;
 
 
                     for (int j = 0, k = 1; j < directionsList.size(); j += 2, k += 2) {
-                        if(i % 2 == 0) {
+                        if (i % 2 == 0) {
                             dir = directionsList.get(k);
                         } else {
                             dir = directionsList.get(j);
                         }
-                            tempCell = currentCell.getNeighbors().get(dir);
-                            if(CheckMovesUtils.isMoveAvailable(game, piece, tempCell)) {
-                                possibleMoves.add(tempCell);
-                            }
+                        tempCell = currentCell.getNeighbors().get(dir);
+                        if (isMoveAvailable(game, piece, tempCell)) {
+                            possibleMoves.add(tempCell);
+                        }
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class KnightPieceService implements IPieceService {
         knightStep.setStartCell(currPosition);
         knightStep.setEndCell(targetCell);
         knightStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             knightStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(knightStep);
@@ -75,7 +75,7 @@ public class KnightPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -83,5 +83,18 @@ public class KnightPieceService implements IPieceService {
         game.getPiece2CellMap().put(piece, targetCell);
         game.getCell2PieceMap().put(targetCell, piece);
         game.getCell2PieceMap().remove(currPosition, piece);
+    }
+
+    public static boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
+
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
     }
 }

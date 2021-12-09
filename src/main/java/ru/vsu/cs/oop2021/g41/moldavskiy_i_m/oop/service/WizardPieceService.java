@@ -44,7 +44,7 @@ public class WizardPieceService implements IPieceService {
             nextCell = currentCell.getNeighbors().get(direction);
             perpendicularNextCell = perpendicularCurrCell.getNeighbors().get(direction);
             if ((nextCell != null) && (perpendicularNextCell != null)) {
-                if(CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+                if (isMoveAvailable(game, piece, nextCell)) {
                     possibleMoves.add(nextCell);
                 }
 
@@ -56,18 +56,18 @@ public class WizardPieceService implements IPieceService {
                     nextCell = currentCell.getNeighbors().get(mainDirections.get(counter));
                 }
 
-                if (CheckMovesUtils.isMoveAvailable(game, piece, nextCell)) {
+                if (isMoveAvailable(game, piece, nextCell)) {
                     possibleMoves.add(nextCell);
                 }
 
                 for (int k = 0; k < 2; k++) {
-                    if(perpendicularNextCell == null) {
+                    if (perpendicularNextCell == null) {
                         break;
                     }
                     perpendicularCurrCell = perpendicularNextCell;
                     perpendicularNextCell = perpendicularCurrCell.getNeighbors().get(mainDirections.get(counter + 1));
                 }
-                if (CheckMovesUtils.isMoveAvailable(game, piece, perpendicularNextCell)) {
+                if (isMoveAvailable(game, piece, perpendicularNextCell)) {
                     possibleMoves.add(perpendicularNextCell);
                 }
                 counter++;
@@ -86,7 +86,7 @@ public class WizardPieceService implements IPieceService {
         wizardStep.setStartCell(currPosition);
         wizardStep.setEndCell(targetCell);
         wizardStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             wizardStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(wizardStep);
@@ -97,7 +97,7 @@ public class WizardPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -105,5 +105,18 @@ public class WizardPieceService implements IPieceService {
         game.getPiece2CellMap().put(piece, targetCell);
         game.getCell2PieceMap().put(targetCell, piece);
         game.getCell2PieceMap().remove(currPosition, piece);
+    }
+
+    private boolean isMoveAvailable(Game game, Piece piece, Cell testedCell) {
+        if (testedCell != null) {
+            return ((game.getCell2PieceMap().get(testedCell) == null) ||
+                    ((game.getCell2PieceMap().get(testedCell) != null) &&
+                            (game.getCell2PieceMap().get(testedCell).getPieceColor() != piece.getPieceColor())));
+        }
+        return false;
+    }
+
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
     }
 }

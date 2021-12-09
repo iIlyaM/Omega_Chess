@@ -52,13 +52,6 @@ public class Game {
         this.steps = steps;
     }
 
-    public List<Player> getPlayers(Map<Player,Set<Piece>> player2PieceMap) {
-        List<Player> players = new ArrayList<>();
-
-        player2PieceMap.forEach((key, value) -> players.add(key));
-        return players;
-    }
-
     public Map<Cell, String> getCell2StringMap() {
         return cell2StringMap;
     }

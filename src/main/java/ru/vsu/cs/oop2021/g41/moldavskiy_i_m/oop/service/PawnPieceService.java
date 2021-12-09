@@ -3,8 +3,6 @@ package ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
-import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
-
 
 import java.util.*;
 
@@ -15,7 +13,7 @@ public class PawnPieceService implements IPieceService {
         List<Cell> possibleMoves = new ArrayList<>();
         DirectionEnum direction = getDirection(piece);
 
-        if(isFirstPawnMove(game, piece)) {
+        if (isFirstPawnMove(game, piece)) {
             possibleMoves.addAll(firstPawnStep(game, piece, direction));
         } else {
             possibleMoves.addAll(findPawnStep(game, piece, direction));
@@ -32,7 +30,7 @@ public class PawnPieceService implements IPieceService {
         pawnStep.setStartCell(currPosition);
         pawnStep.setEndCell(targetCell);
         pawnStep.setPiece(piece);
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             pawnStep.setKilledPiece(game.getCell2PieceMap().get(targetCell));
         }
         game.getSteps().add(pawnStep);
@@ -56,11 +54,11 @@ public class PawnPieceService implements IPieceService {
             firstSteps.add(nextCell);
 
             nextCell = currCell.getNeighbors().get(direction);
-            if(isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
+            if (isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
                 firstSteps.add(nextLeftCell);
             }
 
-            if(isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
+            if (isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
                 firstSteps.add(nextRightCell);
             }
             currCell = nextCell;
@@ -96,7 +94,7 @@ public class PawnPieceService implements IPieceService {
         DirectionEnum dir;
         Cell currCell = game.getPiece2CellMap().get(piece);
 
-        if(piece.getPieceColor() == ColorEnum.WHITE) {
+        if (piece.getPieceColor() == ColorEnum.WHITE) {
             dir = DirectionEnum.SOUTH;
         } else {
             dir = DirectionEnum.NORTH;
@@ -123,7 +121,7 @@ public class PawnPieceService implements IPieceService {
 
 
     private DirectionEnum getDirection(Piece piece) {
-        if(piece.getPieceColor() == ColorEnum.BLACK) {
+        if (piece.getPieceColor() == ColorEnum.BLACK) {
             return DirectionEnum.SOUTH;
         } else {
             return DirectionEnum.NORTH;
@@ -133,7 +131,7 @@ public class PawnPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
+        if (isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
@@ -143,5 +141,7 @@ public class PawnPieceService implements IPieceService {
         game.getCell2PieceMap().remove(currPosition, piece);
     }
 
-
+    private boolean isTargetCellNotEmpty(Game game, Cell targetCell) {
+        return game.getCell2PieceMap().get(targetCell) != null;
+    }
 }
