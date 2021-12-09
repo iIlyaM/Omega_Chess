@@ -6,7 +6,6 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.PieceEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
 
-import java.security.cert.PKIXCertPathChecker;
 import java.util.*;
 
 public class GameService {
