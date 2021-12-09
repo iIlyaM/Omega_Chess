@@ -29,9 +29,8 @@ public class GameService {
 
     public void startGameProcess(Game game) {
         Queue<Player> players = new ArrayDeque<>();
-
         game.getPlayer2PieceMap().forEach((key, value) -> players.add(key));
-        //
+
         Set<Piece> pieces;
         do {
             Player currPlayer = players.poll();
