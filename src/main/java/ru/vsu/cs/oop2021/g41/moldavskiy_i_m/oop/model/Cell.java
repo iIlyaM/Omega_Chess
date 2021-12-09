@@ -9,19 +9,24 @@ import java.util.Objects;
 
 public class Cell {
     private final ColorEnum color;
+    private String consoleCoordinates;
     private final Map<DirectionEnum, Cell> neighbors = new LinkedHashMap<>();
 
-    public Cell(ColorEnum color) {
+    public Cell(ColorEnum color, String consoleCoordinates) {
         this.color = color;
+        this.consoleCoordinates = consoleCoordinates;
     }
 
     public ColorEnum getColor() {
         return color;
     }
 
-
     public Map<DirectionEnum, Cell> getNeighbors() {
         return neighbors;
     }
-    
+
+    public String getConsoleCoordinates() {
+        return consoleCoordinates;
+    }
+
 }

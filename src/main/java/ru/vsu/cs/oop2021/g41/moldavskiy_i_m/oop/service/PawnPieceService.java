@@ -72,20 +72,22 @@ public class PawnPieceService implements IPieceService {
         List<Cell> availableCells = new ArrayList<>();
         Cell currentCell = game.getPiece2CellMap().get(piece);
         Cell nextCell = currentCell.getNeighbors().get(direction);
-        Cell nextLeftCell = nextCell.getNeighbors().get(DirectionEnum.WEST);
-        Cell nextRightCell = nextCell.getNeighbors().get(DirectionEnum.EAST);
+
 
         if (isPawnMoveAvailable(game, nextCell)) {
             availableCells.add(nextCell);
+            Cell nextLeftCell = nextCell.getNeighbors().get(DirectionEnum.WEST);
+            Cell nextRightCell = nextCell.getNeighbors().get(DirectionEnum.EAST);
+            if (isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
+                availableCells.add(nextLeftCell);
+            }
+
+            if (isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
+                availableCells.add(nextCell);
+            }
+
         }
 
-        if (isPawnAttackMoveAvailable(game, piece, nextLeftCell)) {
-            availableCells.add(nextLeftCell);
-        }
-
-        if (isPawnAttackMoveAvailable(game, piece, nextRightCell)) {
-            availableCells.add(nextCell);
-        }
 
         return availableCells;
     }
@@ -131,14 +133,14 @@ public class PawnPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        game.getPiece2CellMap().replace(piece, targetCell);
-        game.getCell2PieceMap().put(targetCell, piece);
-        game.getCell2PieceMap().remove(currPosition, piece);
         if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
         }
+        game.getPiece2CellMap().put(piece, targetCell);
+        game.getCell2PieceMap().put(targetCell, piece);
+        game.getCell2PieceMap().remove(currPosition, piece);
     }
 
 

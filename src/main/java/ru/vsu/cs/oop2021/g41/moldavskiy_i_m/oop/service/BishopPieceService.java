@@ -57,14 +57,14 @@ public class BishopPieceService implements IPieceService {
     private void changeOnBoardPlacement(Game game, Piece piece, Cell targetCell, Cell currPosition) {
         Player rival;
         Piece targetPiece;
-        game.getPiece2CellMap().replace(piece, targetCell);
-        game.getCell2PieceMap().put(targetCell, piece);
-        game.getCell2PieceMap().remove(currPosition, piece);
         if(CheckMovesUtils.isTargetCellNotEmpty(game, targetCell)) {
             targetPiece = game.getCell2PieceMap().get(targetCell);
             rival = game.getPiece2PlayerMap().get(targetPiece);
             game.getPlayer2PieceMap().get(rival).remove(targetPiece);
         }
+        game.getPiece2CellMap().put(piece, targetCell);
+        game.getCell2PieceMap().put(targetCell, piece);
+        game.getCell2PieceMap().remove(currPosition, piece);
     }
 
 

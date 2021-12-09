@@ -8,6 +8,8 @@ public class Game {
     private Map<Cell, Piece> cell2PieceMap = new HashMap();
     private Map<Player, Set<Piece>> player2PieceMap = new HashMap();
     private Map<Piece, Player> piece2PlayerMap = new LinkedHashMap<>();
+    private Map<Cell, String> cell2StringMap = new HashMap<>();
+    private Map<String, Cell> stringCellMap = new HashMap<>();
     private List<Step> steps = new ArrayList<>();
 
     public Map<Piece, Cell> getPiece2CellMap() {
@@ -48,5 +50,28 @@ public class Game {
 
     public void setSteps(List<Step> steps) {
         this.steps = steps;
+    }
+
+    public List<Player> getPlayers(Map<Player,Set<Piece>> player2PieceMap) {
+        List<Player> players = new ArrayList<>();
+
+        player2PieceMap.forEach((key, value) -> players.add(key));
+        return players;
+    }
+
+    public Map<Cell, String> getCell2StringMap() {
+        return cell2StringMap;
+    }
+
+    public void setCell2StringMap(Map<Cell, String> cell2StringMap) {
+        this.cell2StringMap = cell2StringMap;
+    }
+
+    public Map<String, Cell> getStringCellMap() {
+        return stringCellMap;
+    }
+
+    public void setStringCellMap(Map<String, Cell> stringCellMap) {
+        this.stringCellMap = stringCellMap;
     }
 }

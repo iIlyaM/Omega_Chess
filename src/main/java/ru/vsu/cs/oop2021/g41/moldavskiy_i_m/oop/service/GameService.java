@@ -4,6 +4,7 @@ import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.*;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.ColorEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.DirectionEnum;
 import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.model.enums.PieceEnum;
+import ru.vsu.cs.oop2021.g41.moldavskiy_i_m.oop.service.serviceutils.CheckMovesUtils;
 
 import java.security.cert.PKIXCertPathChecker;
 import java.util.*;
@@ -12,10 +13,10 @@ public class GameService {
 
     public static final int BOARD_SIZE = 10;
 
-    private Map<PieceEnum, IPieceService> piece2ServiceMap;
+    private final Map<PieceEnum, IPieceService> piece2ServiceMap;
 
     public GameService(Map<PieceEnum, IPieceService> pieceServiceMap) {
-        this.piece2ServiceMap = piece2ServiceMap;
+        this.piece2ServiceMap = pieceServiceMap;
     }
 
     public Game initGame() {
@@ -29,13 +30,61 @@ public class GameService {
 
     public void startGameProcess(Game game) {
         Queue<Player> players = new ArrayDeque<>();
+        players.addAll(game.getPlayers(game.getPlayer2PieceMap()));
+        Set<Piece> pieces;
+        do {
+            Player currPlayer = players.poll();
+            players.add(currPlayer);
+            pieces = game.getPlayer2PieceMap().get(currPlayer);
+            List<Piece> piecesList = new ArrayList<>(pieces);
 
+            Random randomPiece = new Random();
+            Random randomStep = new Random();
+            Piece piece;
+            List<Cell> possibleMoves;
+            IPieceService pieceService;
+
+            do {
+                piece = piecesList.get(randomPiece.nextInt(piecesList.size()));
+                pieceService = piece2ServiceMap.get(piece.getPieceType());
+                possibleMoves = pieceService.getPossibleMoves(game, piece);
+            } while(possibleMoves.size() == 0);
+            pieceService.makeMove(game, piece, possibleMoves.get(randomStep.nextInt(
+                    possibleMoves.size())));
+        } while(CheckMovesUtils.isKingAlive(pieces));
+    }
+
+
+    public void printGameResult(Game currGame) {
+        List<Step> gameSteps = currGame.getSteps();
+        Step currStep;
+        String currPlayer;
+        String piece;
+        String currCell;
+        String targetCell;
+        String killedPiece;
+        for (int i = 0; i < currGame.getSteps().size(); i++) {
+            currStep = gameSteps.get(i);
+            currPlayer = currStep.getPlayer().getName();
+            piece = currStep.getPiece().getPieceType().toString();
+            currCell = currStep.getStartCell().getConsoleCoordinates();
+            targetCell = currStep.getEndCell().getConsoleCoordinates();
+            if(currStep.getKilledPiece() != null) {
+                killedPiece = currStep.getKilledPiece().getPieceType().toString();
+            } else {
+                killedPiece = "Вражеских фигур не срублено";
+            }
+            System.out.println("Игрок : " + currPlayer + " ходит фигурой " + piece + " с ячейки " + currCell +
+                    " на ячейку " + targetCell);
+            System.out.println("В результате хода срублена фигура : " + killedPiece  + "\n");
+        }
     }
 
     public List<List<Cell>> initBoard() {
         List<List<Cell>> rows = new ArrayList<>();
 
         List<ColorEnum> cellColors = Arrays.asList(ColorEnum.BLACK, ColorEnum.WHITE);
+
 
         Cell prevCell;
         Cell currCell;
@@ -45,8 +94,10 @@ public class GameService {
         for (int i = 0; i < BOARD_SIZE; i++) {
             prevCell = null;
             List<Cell> currRow = new ArrayList<>();
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                currCell = new Cell(cellColors.get((i + j) % 2));
+            char column = 'a';
+            for (int j = 0; j < BOARD_SIZE; j++, column++) {
+                currCell = new Cell(cellColors.get((i + j) % 2),
+                        Integer.toString(i) + Character.toString(column));
                 if (prevCell != null) {
                     currCell.getNeighbors().put(DirectionEnum.WEST, prevCell);
                     prevCell.getNeighbors().put(DirectionEnum.EAST, currCell);
@@ -255,23 +306,23 @@ public class GameService {
             for (int j = 0; j <borderIndexes.length ; j++) {
                 borderCell = board.get(borderIndexes[i]).get(borderIndexes[j]);
                 if(borderIndexes[i] < borderIndexes[j]) {
-                    newWizardCell = new Cell(borderCell.getColor());
+                    newWizardCell = new Cell(borderCell.getColor(), "wizardWhiteLeft");
                     borderCell.getNeighbors().put(DirectionEnum.NORTH_EAST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, borderCell);
                 }
                 if(borderIndexes[i] > borderIndexes[j]) {
-                    newWizardCell = new Cell(borderCell.getColor());
+                    newWizardCell = new Cell(borderCell.getColor(), "wizardBlackRight");
                     borderCell.getNeighbors().put(DirectionEnum.SOUTH_WEST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.NORTH_EAST, borderCell);
                 }
 
                 if((borderIndexes[i] == 0) && (borderIndexes[i] == borderIndexes[j])) {
-                    newWizardCell = new Cell(borderCell.getColor());
+                    newWizardCell = new Cell(borderCell.getColor(), "wizardBlackLeft");
                     borderCell.getNeighbors().put(DirectionEnum.NORTH_WEST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, borderCell);
                 }
                 if((borderIndexes[i] == 9) && (borderIndexes[i] == borderIndexes[j])) {
-                    newWizardCell = new Cell(borderCell.getColor());
+                    newWizardCell = new Cell(borderCell.getColor(), "wizardWhiteRight");
                     borderCell.getNeighbors().put(DirectionEnum.SOUTH_EAST, newWizardCell);
                     newWizardCell.getNeighbors().put(DirectionEnum.NORTH_WEST, borderCell);
                 }
